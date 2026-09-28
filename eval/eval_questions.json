@@ -1,0 +1,186 @@
+{
+  "_readme": "Evaluation set for the RAG chatbot (llm-workforce-impact-rag-chatbot). Facts below were pulled from each paper's arXiv abstract page (checked Sep 2026), NOT from the full PDF text stored in the Databricks volume. Abstract-level facts are usually accurate summaries, but the retriever pulls chunks from the full PDF, so verify each 'expected_facts' entry against the actual retrieved chunks (or the PDF) the first time you run this -- flip verified to true once you've confirmed a question's facts hold up, or fix the fact if the PDF says something more specific/different. Categories: single_doc (answer should come from exactly one paper), multi_doc (answer should synthesize 2+ papers), scope_probe (on-topic but easy to over-answer beyond what's retrievable -- checks the bot stays grounded), should_decline (off-topic, bot should refuse per its system prompt), unanswerable (on-topic but not covered by any of the 5 source docs -- bot should say so, not invent an answer).",
+  "source_documents": {
+    "2302.06476": "Is ChatGPT a General-Purpose Natural Language Processing Task Solver? (Qin et al.)",
+    "2303.10130": "GPTs are GPTs: An Early Look at the Labor Market Impact Potential of Large Language Models (Eloundou, Manning, Mishkin, Rock)",
+    "2312.14565": "Improving Task Instructions for Data Annotators: How Clear Rules and Higher Pay Increase Performance in Data Annotation in the AI Economy (Laux, Stephany, Liefgreen)",
+    "2304.07683": "Fairness And Bias in Artificial Intelligence: A Brief Survey of Sources, Impacts, And Mitigation Strategies (Ferrara)",
+    "2311.07071": "The Impact of Generative Artificial Intelligence on Market Equilibrium: Evidence from a Natural Experiment (Zhang, Yuan, Xiong)"
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "category": "single_doc",
+      "source_doc": "2302.06476",
+      "question": "How many datasets and task categories was ChatGPT evaluated on as a general-purpose NLP solver, and what was the overall conclusion?",
+      "expected_facts": [
+        "ChatGPT was evaluated on 20 datasets covering 7 task categories: reasoning (arithmetic, commonsense, symbolic, logical), natural language inference, question answering, dialogue, summarization, named entity recognition, and sentiment analysis",
+        "ChatGPT shows real generalist capability but often performs worse than models fine-tuned specifically for a given task",
+        "It is comparatively weak at sequence tagging tasks like named entity recognition and tends to produce overly verbose summaries"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q02",
+      "category": "single_doc",
+      "source_doc": "2303.10130",
+      "question": "What share of the U.S. workforce could have at least 10% of their work tasks affected by large language models?",
+      "expected_facts": [
+        "About 80% of the U.S. workforce could have at least 10% of their work tasks affected by the introduction of LLMs",
+        "About 19% of workers could see at least 50% of their tasks impacted"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q03",
+      "category": "single_doc",
+      "source_doc": "2312.14565",
+      "question": "How much did giving data annotators clear rules improve their accuracy compared to vague standards, and what was the best-performing group?",
+      "expected_facts": [
+        "Annotators given clear rules were about 14% more accurate than those given vague standards",
+        "The group given both clear rules and a monetary incentive had the highest accuracy overall, at about 87.5%",
+        "The study found clear rules are more cost-efficient at raising accuracy than monetary incentives alone"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q04",
+      "category": "single_doc",
+      "source_doc": "2304.07683",
+      "question": "What three mitigation strategies does the fairness and bias survey discuss for reducing bias in AI systems?",
+      "expected_facts": [
+        "Data pre-processing",
+        "Model selection",
+        "Post-processing techniques",
+        "The paper also stresses the need for interdisciplinary collaboration to make mitigation effective"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q05",
+      "category": "single_doc",
+      "source_doc": "2311.07071",
+      "question": "What happened to prices, order volume, and revenue on the Chinese art outsourcing platform after the image-generation AI leak?",
+      "expected_facts": [
+        "Prices dropped by about 64% on average",
+        "Order volume surged by about 121%",
+        "Overall revenue increased by about 56%",
+        "Growth was driven mainly by low-end personal orders rather than commercial orders"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q06",
+      "category": "multi_doc",
+      "source_docs": ["2303.10130", "2312.14565"],
+      "question": "Across the labor-market and data-annotation papers, how does the effect of LLMs on work differ between task displacement and improving how work is structured?",
+      "expected_facts": [
+        "The labor market paper finds a large share of tasks exposed to LLM automation/augmentation (about 80% of workers have at least 10% of tasks affected, 19% have at least half their tasks affected)",
+        "The data annotation paper is not about displacement -- it finds accuracy on AI-economy tasks can be improved by better task design (clear rules) and pay, raising accuracy as high as 87.5%, i.e. improving existing human work rather than replacing it"
+      ],
+      "verified": false,
+      "notes": "This is a synthesis question -- check the answer draws a real contrast rather than just listing both papers' facts side by side."
+    },
+    {
+      "id": "q07",
+      "category": "multi_doc",
+      "source_docs": ["2311.07071"],
+      "question": "Which paper studies fears of worker/creator displacement from generative AI, and does its evidence support or complicate that narrative?",
+      "expected_facts": [
+        "The market equilibrium paper (2311.07071) studies a sudden leak of an advanced image-generation AI affecting a Chinese art outsourcing platform",
+        "Despite prices falling about 64%, established creators retained the majority of market share and captured most of the benefit from the AI-driven demand increase, which complicates a simple displacement narrative"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q08",
+      "category": "multi_doc",
+      "source_docs": ["2303.10130", "2304.07683"],
+      "question": "How do the labor-market paper and the AI fairness survey both raise concerns connected to employment?",
+      "expected_facts": [
+        "The labor market paper (2303.10130) quantifies how much of workers' tasks are exposed to LLM automation across the U.S. workforce",
+        "The fairness survey (2304.07683) separately warns that AI bias affects high-stakes decisions including employment (alongside healthcare, criminal justice, and credit scoring)"
+      ],
+      "verified": false
+    },
+    {
+      "id": "q09",
+      "category": "multi_doc",
+      "source_docs": ["2312.14565", "2311.07071"],
+      "question": "Do any of the documents suggest ways generative AI's economic impact on workers could be positive rather than purely disruptive?",
+      "expected_facts": [
+        "The data annotation paper shows that structuring AI-economy work with clear rules and pay incentives measurably improves worker accuracy and is cost-efficient",
+        "The market equilibrium paper finds that even after a disruptive AI leak, existing creators adapted and retained most of the market rather than being wholly displaced"
+      ],
+      "verified": false,
+      "notes": "Open-ended synthesis question; graded more on whether the answer stays grounded in the two papers than on an exact wording match."
+    },
+    {
+      "id": "q10",
+      "category": "scope_probe",
+      "source_doc": "2304.07683",
+      "question": "Does AI bias disproportionately affect certain demographic groups in hiring specifically?",
+      "expected_behavior": "The fairness survey discusses employment generally as one of several high-stakes domains (with healthcare, criminal justice, credit scoring) where biased AI reinforces stereotypes and inequality, but the abstract does not give hiring-specific demographic breakdowns. A good answer should stay at that general level and not invent specific demographic statistics that aren't in the retrieved context.",
+      "verified": true
+    },
+    {
+      "id": "q11",
+      "category": "scope_probe",
+      "source_doc": null,
+      "question": "How does generative AI affect worker wages, specifically?",
+      "expected_behavior": "None of the 5 source papers directly measure wages. The labor-market paper measures task exposure, and the market-equilibrium paper measures platform prices/order volume/revenue, not individual wages. A good answer either says wages aren't directly addressed or clearly distinguishes the available proxy findings (task exposure, platform pricing/revenue) from actual wage data, rather than fabricating a wage statistic.",
+      "verified": true
+    },
+    {
+      "id": "q12",
+      "category": "scope_probe",
+      "source_doc": "2303.10130",
+      "question": "Is the research on LLMs' labor market impact specific to the United States, or is it a global study?",
+      "expected_facts": [
+        "The paper is explicitly about the U.S. labor market / U.S. workforce, not a global study"
+      ],
+      "verified": false,
+      "notes": "Checks that the bot doesn't over-generalize a U.S.-specific finding to the whole world."
+    },
+    {
+      "id": "q13",
+      "category": "should_decline",
+      "source_doc": null,
+      "question": "What's a good recipe for chocolate chip cookies?",
+      "expected_behavior": "Should politely decline as off-topic, per the system prompt restricting the assistant to GenAI/LLM workforce and economic impact questions.",
+      "verified": true
+    },
+    {
+      "id": "q14",
+      "category": "should_decline",
+      "source_doc": null,
+      "question": "Who won the most recent World Cup?",
+      "expected_behavior": "Should politely decline as off-topic (sports), per the system prompt.",
+      "verified": true
+    },
+    {
+      "id": "q15",
+      "category": "unanswerable",
+      "source_doc": null,
+      "question": "How many jobs is generative AI expected to eliminate globally by 2030?",
+      "expected_behavior": "None of the 5 source documents make a global jobs-eliminated forecast for 2030 (or any year). The bot should say this isn't covered by its source material rather than inventing a number.",
+      "verified": true
+    },
+    {
+      "id": "q16",
+      "category": "unanswerable",
+      "source_doc": null,
+      "question": "How does generative AI's economic impact in India compare to the United States?",
+      "expected_behavior": "None of the source documents study India (the labor-market paper studies the U.S., the market-equilibrium paper studies a Chinese platform). The bot should decline to speculate about India rather than inventing a comparison.",
+      "verified": true
+    },
+    {
+      "id": "q17",
+      "category": "unanswerable",
+      "source_doc": null,
+      "question": "What does the research say about how generative AI affects unionized versus non-unionized workers?",
+      "expected_behavior": "None of the 5 papers break results down by unionization status. The bot should acknowledge this isn't covered rather than guessing.",
+      "verified": true
+    }
+  ]
+}
